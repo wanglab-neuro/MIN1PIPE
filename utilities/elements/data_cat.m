@@ -29,7 +29,7 @@ function [m, filename, imaxf, imeanf, pixh, pixw, nf, imx1, imn1] = data_cat(pat
     end
         
     if ~contains(file_fmt, 'mat')
-        filename = [path_name, file_base, '_frame_all.mat'];
+        filename = fullfile(path_name, [file_base, '_frame_all.mat']);
         msg = 'Overwrite raw .mat file (data)? (y/n)';
         overwrite_flag = judge_file(filename, msg);
         if overwrite_flag
@@ -39,11 +39,14 @@ function [m, filename, imaxf, imeanf, pixh, pixw, nf, imx1, imn1] = data_cat(pat
 
             %% initialize to get info %%
             if contains(file_fmt, 'avi')
-                dirst = [dir([path_name, file_base, '.avi']); dir([path_name, file_base, '*', '.avi'])];
+                dirst = [dir(fullfile(path_name, [file_base, '.avi']));...
+                 dir(fullfile(path_name, [file_base, '*', '.avi']))];
             elseif contains(file_fmt, 'tiff')
-                dirst = [dir([path_name, file_base, '.tiff']); dir([path_name, file_base, '-*', '.tiff'])];
+                dirst = [dir(fullfile(path_name, [file_base, '.tiff']));...
+                 dir(fullfile(path_name, [file_base, '-*', '.tiff']))];
             elseif contains(file_fmt, 'tif')
-                dirst = [dir([path_name, file_base, '.tif']); dir([path_name, file_base, '-*', '.tif'])];
+                dirst = [dir(fullfile(path_name, [file_base, '.tif']));...
+                 dir(fullfile(path_name, [file_base, '-*', '.tif']))];
             end
             dirs = cell(1, length(dirst));
             nft = zeros(1, length(dirst));
@@ -54,16 +57,16 @@ function [m, filename, imaxf, imeanf, pixh, pixw, nf, imx1, imn1] = data_cat(pat
             for i = 1: length(dirst)
                 dirs{i} = dirst(i).name;
                 if contains(file_fmt, 'avi')
-%                     info = matlab.internal.VideoReader([path_name, dirs{i}]);
+%                     info = matlab.internal.VideoReader(fullfile(path_name, [dirs{i}));
 %                     ts = info.Timestamps;
 %                     nft(i) = length(ts);
-                    info = aviinfo([path_name, dirs{i}]);
+                    info = aviinfo(fullfile(path_name, dirs{i}));
                     nft(i) = info.NumFrames;
                     temp1 = strfind(dirs{i}, file_base);
                     temp2 = strfind(dirs{i}, '.');
                     idx(i) = str2double(dirst(i).name(temp1 + length(file_base): temp2 - 1));
                 else
-                    info = imfinfo([path_name, dirs{i}]);
+                    info = imfinfo(fullfile(path_name, dirs{i}));
                     nft(i) = numel(info);
                     temp = strfind(dirst(i).name, '-');
                     if isempty(temp)
@@ -79,11 +82,11 @@ function [m, filename, imaxf, imeanf, pixh, pixw, nf, imx1, imn1] = data_cat(pat
             %% initialization to get frames %%
             if contains(file_fmt, 'avi')
                 try
-                    info = VideoReader([path_name, dirs{1}]);
+                    info = VideoReader(fullfile(path_name, dirs{1}));
                     dtype = ['uint', num2str(info.BitsPerPixel)];
                     vfmt = info.VideoFormat;
                 catch
-                    info = aviinfo([path_name, dirs{1}]);
+                    info = aviinfo(fullfile(path_name, dirs{1}));
                     dt = info.FileSize / (info.NumFrames * info.Width * info.Height);
                     dtype = ['uint', num2str(round(dt) * 8)];
                     vfmt = info.ImageType;
@@ -92,7 +95,7 @@ function [m, filename, imaxf, imeanf, pixh, pixw, nf, imx1, imn1] = data_cat(pat
                     dtype = 'uint8';
                 end
             else
-                info = imfinfo([path_name, dirs{1}]);
+                info = imfinfo(fullfile(path_name, dirs{1}));
                 dtype = ['uint', num2str(info(1).BitDepth)];
             end
 %             pixwo = info(1,1).Width;
@@ -166,7 +169,7 @@ function [m, filename, imaxf, imeanf, pixh, pixw, nf, imx1, imn1] = data_cat(pat
                 if contains(file_fmt, 'avi')
                     for i = 1: length(dir_use{ib})
                         %%% prepare file %%%
-                        m = memmapfile([path_name, dir_use{ib}{i}], 'format', dtype);
+                        m = memmapfile(fullfile(path_name, dir_use{ib}{i}), 'format', dtype);
                         d_raw = m.Data;
                         
                         %%% get key header info %%%
@@ -225,9 +228,9 @@ function [m, filename, imaxf, imeanf, pixh, pixw, nf, imx1, imn1] = data_cat(pat
                 elseif contains(file_fmt, 'tif') || contains(file_fmt, 'tiff')
                     for i = 1: length(dir_use{ib})
                         %%% prepare file %%%
-                        info = imfinfo([path_name, dir_use{ib}{i}]);
+                        info = imfinfo(fullfile(path_name, dir_use{ib}{i}));
 %                         m = memmapfile([path_name, dir_use{ib}{i}], 'format', dtype);
-                        m = memmapfile([path_name, dir_use{ib}{i}], 'format', 'uint8');
+                        m = memmapfile(fullfile(path_name, dir_use{ib}{i}), 'format', 'uint8');
                         d_raw = m.Data;
                         
                         %%% get key header info %%%
@@ -276,9 +279,9 @@ function [m, filename, imaxf, imeanf, pixh, pixw, nf, imx1, imn1] = data_cat(pat
             imx1 = max(imaxf(:));
             imn1 = min(iminf(:));
             m = normalize_batch(filename, 'frame_all', imx1, imn1, idbatch);
-            save([path_name, file_base, '_supporting.mat'], 'imx1', 'imn1')
+            save(fullfile(path_name, [file_base, '_supporting.mat']), 'imx1', 'imn1')
         else %%% get outputs from the saved data file %%%
-            load([path_name, file_base, '_supporting.mat'], 'imx1', 'imn1')
+            load(fullfile(path_name, [file_base, '_supporting.mat']), 'imx1', 'imn1')
             m = matfile(filename);
             [pixh, pixw, nf] = size(m, 'frame_all');
             imaxf = zeros(pixh, pixw);
@@ -297,7 +300,7 @@ function [m, filename, imaxf, imeanf, pixh, pixw, nf, imx1, imn1] = data_cat(pat
         end
     else %%% get .mat format %%%
         %%% get file info %%%
-        fname = [path_name, file_base, '.mat'];
+        fname = fullfile(path_name, [file_base, '.mat']);
         mm = matfile(fname);
         vnames = who(mm);
         eval(['dtype = class(mm.', vnames{1}, '(:, :, 1));'])
@@ -314,7 +317,7 @@ function [m, filename, imaxf, imeanf, pixh, pixw, nf, imx1, imn1] = data_cat(pat
         %%% collect batch-wise frames %%%
         idbatch = [1: ebatch: nff, nff + 1];
         disp('Begin data cat')
-        filename = [path_name, file_base, '_frame_all.mat'];
+        filename = fullfile(path_name, [file_base, '_frame_all.mat']);
         msg = 'Overwrite raw .mat file (data)? (y/n)';
         overwrite_flag = judge_file(filename, msg);
         
@@ -344,9 +347,9 @@ function [m, filename, imaxf, imeanf, pixh, pixw, nf, imx1, imn1] = data_cat(pat
             imn1 = min(iminf(:));
             idbatch = idbatchn;
             m = normalize_batch(filename, 'frame_all', imx1, imn1, idbatch);
-            save([path_name, file_base, '_supporting.mat'], 'imx1', 'imn1')
+            save(fullfile(path_name, [file_base, '_supporting.mat']), 'imx1', 'imn1')
         else
-            load([path_name, file_base, '_supporting.mat'], 'imx1', 'imn1')
+            load(fullfile(path_name, [file_base, '_supporting.mat']), 'imx1', 'imn1')
             m = matfile(filename);
             imaxf = zeros(pixh, pixw);
             for i = 1: nbatch
