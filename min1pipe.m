@@ -85,7 +85,7 @@ function [file_name_to_save, filename_raw, filename_reg] = min1pipe(Fsi, Fsi_new
             
             %% neural enhancing batch version %%
             %%% --------- 2nd section ---------- %%%
-            filename_reg = [path_name, file_base{i}, '_reg.mat'];
+            filename_reg = fullfile(path_name, [file_base{i}, '_reg.mat']);
             [m, imaxy1, overwrite_flag, imx2, imn2, ibmean] = neural_enhance(m, filename_reg, Params);
             
             %% neural enhancing postprocess %%
