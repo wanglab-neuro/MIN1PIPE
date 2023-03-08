@@ -10,24 +10,24 @@ function [file_name_to_save, filename_raw, filename_reg] = min1pipe(Fsi, Fsi_new
     min1pipe_init;
     
     %% initialize parameters %%
+    defpar = default_parameters;
+    aflag = false;
     if nargin < 1 || isempty(Fsi)
-        defpar = default_parameters;
         Fsi = defpar.Fsi;
     end
     
     if nargin < 2 || isempty(Fsi_new)
-        defpar = default_parameters;
         Fsi_new = defpar.Fsi_new;
     end
     
     if nargin < 3 || isempty(spatialr)
-        defpar = default_parameters;
         spatialr = defpar.spatialr;
+        aflag = true;
     end
     
     if nargin < 4 || isempty(se)
-        defpar = default_parameters;
         se = defpar.neuron_size;
+        aflag = true;
     end
     
     if nargin < 5 || isempty(ismc)
@@ -69,7 +69,6 @@ function [file_name_to_save, filename_raw, filename_reg] = min1pipe(Fsi, Fsi_new
     
     hpipe = tic;
     for i = 1: length(file_base)
-        
         %%% judge whether do the processing %%%
         filecur = [path_name, file_base{i}, '_data_processed.mat'];
         msg = 'Redo the analysis? (y/n)';
@@ -80,9 +79,15 @@ function [file_name_to_save, filename_raw, filename_reg] = min1pipe(Fsi, Fsi_new
             %%% --------- 1st section ---------- %%%
             Fsi = Params.Fsi;
             Fsi_new = Params.Fsi_new;
-            spatialr = Params.spatialr;
+            spatialr = 1;
             [m, filename_raw, imaxn, imeanf, pixh, pixw, nf, imx1, imn1] = data_cat(path_name, file_base{i}, file_fmt{i}, Fsi, Fsi_new, spatialr);
             
+            %%% remove dead pixels %%%
+            [m, imaxn] = remove_dp(m, 'frame_allt');
+            
+            %%% spatial downsampling after auto-detection %%%
+            [m, Params, pixh, pixw] = downsamp(path_name, file_base{i}, m, Params, aflag, imaxn);
+
             %% neural enhancing batch version %%
             %%% --------- 2nd section ---------- %%%
             filename_reg = fullfile(path_name, [file_base{i}, '_reg.mat']);
