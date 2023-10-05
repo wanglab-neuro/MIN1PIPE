@@ -7,6 +7,9 @@
 
 MIN1PIPE is a fully automatic, Matlab-based toolbox, solving the full range problems in 1-photon calcium imaging in one package: *`data enhancement`* &rarr; *`movement morrection`* &rarr; *`signal extraction`*. It requires minimal parameter-tuning and integrates the semi-auto options. Each inidividual module can also be easily adapted for the 2-photon imaging setting.
 
+Try `demo_min1pipe`!  
+[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=wanglab-neuro/MIN1PIPE&file=demo_min1pipe.m)
+
 ## Contents
 1. [Updates](#updates)
 2. [Introduction and Features](#introduction-and-features)
