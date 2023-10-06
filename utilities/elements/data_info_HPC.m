@@ -16,7 +16,11 @@ function [path_name, file_base, file_fmt] = data_info_HPC(file_name_tmp, path_na
         %%% first find out whether it is Inscopix or UCLA %%%
         if contains(file_name{i}, '.avi')
             file_fmt{i} = 'avi';
+            % quick fix
             ids = regexp(file_name{i}(1: end - 4), '[^\d]');
+            if isempty(ids)
+                ids = regexp(file_name{i}(1: end - 4), '[\d]');
+            end
             ids = ids(end);
             file_base{i} = file_name{i}(1: ids);
         elseif contains(file_name{i}, '.tiff')
