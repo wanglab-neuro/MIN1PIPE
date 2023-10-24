@@ -29,7 +29,7 @@ function [m, filename, imaxf, imeanf, pixh, pixw, nf, imx1, imn1] = data_cat(pat
     end
         
     if ~contains(file_fmt, 'mat')
-        filename = [path_name, file_base, '_frame_allt.mat'];
+        filename = fullfile(path_name, [file_base, '_frame_allt.mat']);
         if exist(filename, 'file')
             overwrite_flag = false;
         else
@@ -45,7 +45,7 @@ function [m, filename, imaxf, imeanf, pixh, pixw, nf, imx1, imn1] = data_cat(pat
             if contains(file_fmt, 'avi')
                 dirst = [dir([path_name, file_base, '.avi']); dir([path_name, file_base, '*', '.avi'])];
             elseif contains(file_fmt, 'tiff')
-                dirst = [dir([path_name, file_base, '.tiff']); dir([path_name, file_base, '-*', '.tiff'])];
+                dirst = [dir(fullfile(path_name, [file_base, '.tiff'])); dir(fullfile(path_name, [file_base, '-*', '.tiff']))];
             elseif contains(file_fmt, 'tif')
                 dirst = [dir(fullfile(path_name, [file_base '.tif'])); dir(fullfile(path_name, [file_base, '-*', '.tif']))];
             end
@@ -232,7 +232,7 @@ function [m, filename, imaxf, imeanf, pixh, pixw, nf, imx1, imn1] = data_cat(pat
                         %%% prepare file %%%
                         info = imfinfo(fullfile(path_name, dir_use{ib}{i}));
 %                         m = memmapfile([path_name, dir_use{ib}{i}], 'format', dtype);
-                        m = memmapfile([path_name, dir_use{ib}{i}], 'format', 'uint8');
+                        m = memmapfile(fullfile(path_name, dir_use{ib}{i}), 'format', 'uint8');
                         d_raw = m.Data;
                         
                         %%% get key header info %%%

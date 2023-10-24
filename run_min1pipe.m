@@ -1,8 +1,8 @@
 function run_min1pipe(filePath)
 
 %% session-specific parameter initialization %%
-Fsi = 10;
-Fsi_new = 10; %%% no temporal downsampling %%%
+Fsi = 20;
+Fsi_new = 1; %%% no temporal downsampling %%%
 % spatialr = 1; %%% no spatial downsampling %%%
 % se = 5; %%% structure element for background removal %%%
 ismc = true; %%% run movement correction %%%
@@ -11,7 +11,7 @@ flag = 1; %%% use auto seeds selection; 2 if manual %%%
 ifpost = false; %%% set true if want to see post-process %%%
 
 %% main program %%
-[path_name, file_name, file_format] = fileparts(filePath);
+[path_name, file_name, file_format] = fileparts('/Volumes/Elements/inscopix/ng74/ng74_awake1/20230629_ng74_awake3.tiff');
 [fname, frawname, fregname] = min1pipe_HPC(Fsi, Fsi_new, [], [], ismc, flag, path_name, [file_name file_format]);
 
 if ifpost
