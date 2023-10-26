@@ -1,5 +1,8 @@
 function run_min1pipe(filePath)
 
+% Example usage:
+% run_min1pipe('/Users/ngoldstein/miniscope_data/ng74/20230629_ng74_awake3.tiff')
+
 %% session-specific parameter initialization %%
 Fsi = 20;
 Fsi_new = 1; %%% no temporal downsampling %%%
