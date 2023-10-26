@@ -11,7 +11,7 @@ flag = 1; %%% use auto seeds selection; 2 if manual %%%
 ifpost = false; %%% set true if want to see post-process %%%
 
 %% main program %%
-[path_name, file_name, file_format] = fileparts('/Users/ngoldstein/miniscope_data/ng74/20230629_ng74_awake3.tiff');
+[path_name, file_name, file_format] = fileparts(filePath);
 [fname, frawname, fregname] = min1pipe_HPC(Fsi, Fsi_new, [], [], ismc, flag, path_name, [file_name file_format]);
 
 if ifpost

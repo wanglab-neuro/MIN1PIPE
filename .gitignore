@@ -1,1 +1,7 @@
+# CVX install 
 utilities/cvx/
+
+# .asv Matlab files
+*.asv
+
+# remove cached files from the repo with: git rm -r --cached <file>.<format>
