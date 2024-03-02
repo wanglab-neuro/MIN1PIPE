@@ -6,6 +6,8 @@ function [file_name_to_save, filename_raw, filename_reg] = min1pipe_HPC(Fsi, Fsi
 %   spatialr: spatial downsampling factor
 %   Jinghao Lu 06/10/2016
 
+setenv('HDF5_USE_FILE_LOCKING', 'FALSE');
+
     %% configure paths %%
     min1pipe_init;
     
