@@ -9,12 +9,11 @@ function [file_name_to_save, filename_raw, filename_reg] = min1pipe_HPC(Fsi, Fsi
 setenv('HDF5_USE_FILE_LOCKING', 'FALSE');
 % Get current wall time from the system ($(squeue -j $SLURM_JOB_ID -h --Format TimeLimit)")
 % Then assign it to parcluster.
-setenv('SLURM_WALLTIME', system('squeue -j $SLURM_JOB_ID -h --Format TimeLimit'));
-%% get current wall time from the system
-currentWallTime = getenv('SLURM_WALLTIME');
-c = parcluster;
-c.AdditionalProperties.WallTime = currentWallTime;
-c.saveProfile;
+% [~, currentWallTime] = system('squeue -j $SLURM_JOB_ID -h --Format TimeLimit');
+% currentWallTime=strtrim(currentWallTime);
+% c = parcluster;
+% c.AdditionalProperties.WallTime = currentWallTime;
+% c.saveProfile;
 
 %% configure paths %%
 min1pipe_init;

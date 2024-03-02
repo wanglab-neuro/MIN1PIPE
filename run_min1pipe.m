@@ -1,7 +1,12 @@
 function run_min1pipe(filePath)
 
 % Example usage:
-% run_min1pipe('/Users/ngoldstein/miniscope_data/ng74/20230629_ng74_awake3.tiff')
+% run_min1pipe('./demo/demo_data.tif')
+
+% on the HPC, you can run this function with the following command:
+% sbatch --mem=16G --time=1:00:00 --wrap="matlab -nodisplay -r 'run_min1pipe('./demo/demo_data.tif'); exit;'"
+% (parpool doesn't work on the HPC on interactive session)
+
 
 %% session-specific parameter initialization %%
 Fsi = 20;
