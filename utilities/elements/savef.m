@@ -18,16 +18,9 @@ function savef(filename, flag, varargin)
     end
 
     if all(isnum)
-        %%% Save a dummy variable, just to create the file %%%
+        % Create the file if it does not exist
         if ~exist(filename, 'file')
-            dummy = 0;
-            save(filename, '-v7.3', 'dummy');
-
-            %%% Delete the dummy, if necessary, just in case the user supplied a
-            %%% variable called dummy %%%
-            fid = H5F.open(filename,'H5F_ACC_RDWR','H5P_DEFAULT');
-            H5L.delete(fid,'dummy','H5P_DEFAULT');
-            H5F.close(fid);
+            save(filename, '-v7.3')
         end
     else
         s = struct;
