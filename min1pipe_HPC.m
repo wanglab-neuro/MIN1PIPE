@@ -1,4 +1,4 @@
-function [file_name_to_save, filename_raw, filename_reg] = min1pipe_HPC(Fsi, Fsi_new, spatialr, se, ismc, flag, path_name, file_name, overwrite_flag)
+function [file_name_to_save, filename_raw, filename_reg] = min1pipe_HPC(Fsi, Fsi_new, spatialr, se, ismc, flag, path_name, file_name, overwrite_files)
 % main_processing
 %   need to decide whether to use parallel computing
 %   Fsi: raw sampling rate
@@ -19,8 +19,8 @@ disp(['Requested memory: ', getenv('SLURM_MEM_PER_NODE')]);
 currentWallTime=strtrim(currentWallTime);
 disp(['Wall time: ', currentWallTime]);
 
-if nargin < 8 || isempty(overwrite_flag)
-    overwrite_flag = [];
+if nargin < 8 || isempty(overwrite_files)
+    overwrite_files = [];
 end
 
 %% configure paths %%
@@ -88,9 +88,15 @@ hpipe = tic;
 for i = 1: length(file_base)
     %%% judge whether do the processing %%%
     filecur = [path_name, file_base{i}, '_data_processed.mat'];
-    if isempty(overwrite_flag)
+    if isempty(overwrite_files)
         msg = 'Redo the analysis? (y/n)';
         overwrite_flag = judge_file(filecur, msg);
+    else
+        if strcmp(overwrite_files, 'all')
+            overwrite_flag = true;
+        else
+            overwrite_flag = false;
+        end
     end
 
     if overwrite_flag
@@ -109,7 +115,7 @@ for i = 1: length(file_base)
 
         %% neural enhancing batch version %%
         filename_reg = [path_name, file_base{i}, '_reg.mat'];
-        if strcmp(overwrite_flag, 'all')
+        if strcmp(overwrite_files, 'all')
             [m, imaxy1, overwrite_flag, imx2, imn2, ibmean] = neural_enhance(m, filename_reg, Params, true);
         else
             [m, imaxy1, overwrite_flag, imx2, imn2, ibmean] = neural_enhance(m, filename_reg, Params);
@@ -154,7 +160,7 @@ for i = 1: length(file_base)
         %%% --------- 3rd section ---------- %%%
         nflag = 2;
         filename_reg_post = [path_name, file_base{i}, '_reg_post.mat'];
-        if strcmp(overwrite_flag, 'all')
+        if strcmp(overwrite_files, 'all')
             m = noise_suppress(m, imaxy, Fsi_new, nflag, filename_reg_post, true);
         else
             m = noise_suppress(m, imaxy, Fsi_new, nflag, filename_reg_post);
