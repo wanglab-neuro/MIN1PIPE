@@ -5,15 +5,19 @@ function [file_name_to_save, filename_raw, filename_reg] = min1pipe_HPC(Fsi, Fsi
 %   Fsi_new: in use sampling rate
 %   spatialr: spatial downsampling factor
 %   Jinghao Lu 06/10/2016
+%   Adapting to HPC: Vincent Prevosto 2023-2024
 
+% Set the environment variable HDF5_USE_FILE_LOCKING to FALSE to avoid hdf5 parallel write errors. 
+% This will also be set in the slurm script.
 setenv('HDF5_USE_FILE_LOCKING', 'FALSE');
-% Get current wall time from the system ($(squeue -j $SLURM_JOB_ID -h --Format TimeLimit)")
-% Then assign it to parcluster.
-% [~, currentWallTime] = system('squeue -j $SLURM_JOB_ID -h --Format TimeLimit');
-% currentWallTime=strtrim(currentWallTime);
-% c = parcluster;
-% c.AdditionalProperties.WallTime = currentWallTime;
-% c.saveProfile;
+
+% Show the current job ID and requested CPU, memory, and wall time
+disp(['Job ID: ', getenv('SLURM_JOB_ID')]);
+disp(['Requested CPUs: ', getenv('SLURM_CPUS_ON_NODE')]);
+disp(['Requested memory: ', getenv('SLURM_MEM_PER_NODE')]);
+[~, currentWallTime] = system('squeue -j $SLURM_JOB_ID -h --Format TimeLimit');
+currentWallTime=strtrim(currentWallTime);
+disp(['Wall time: ', currentWallTime]);
 
 %% configure paths %%
 min1pipe_init;
