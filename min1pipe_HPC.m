@@ -1,4 +1,4 @@
-function [file_name_to_save, filename_raw, filename_reg] = min1pipe_HPC(Fsi, Fsi_new, spatialr, se, ismc, flag, path_name, file_name)
+function [file_name_to_save, filename_raw, filename_reg] = min1pipe_HPC(Fsi, Fsi_new, spatialr, se, ismc, flag, path_name, file_name, overwrite_flag)
 % main_processing
 %   need to decide whether to use parallel computing
 %   Fsi: raw sampling rate
@@ -18,6 +18,10 @@ disp(['Requested memory: ', getenv('SLURM_MEM_PER_NODE')]);
 [~, currentWallTime] = system('squeue -j $SLURM_JOB_ID -h --Format TimeLimit');
 currentWallTime=strtrim(currentWallTime);
 disp(['Wall time: ', currentWallTime]);
+
+if nargin < 8 || isempty(overwrite_flag)
+    overwrite_flag = [];
+end
 
 %% configure paths %%
 min1pipe_init;
@@ -84,8 +88,10 @@ hpipe = tic;
 for i = 1: length(file_base)
     %%% judge whether do the processing %%%
     filecur = [path_name, file_base{i}, '_data_processed.mat'];
-    msg = 'Redo the analysis? (y/n)';
-    overwrite_flag = judge_file(filecur, msg);
+    if isempty(overwrite_flag)
+        msg = 'Redo the analysis? (y/n)';
+        overwrite_flag = judge_file(filecur, msg);
+    end
 
     if overwrite_flag
         %% data cat %%
@@ -103,7 +109,11 @@ for i = 1: length(file_base)
 
         %% neural enhancing batch version %%
         filename_reg = [path_name, file_base{i}, '_reg.mat'];
-        [m, imaxy1, overwrite_flag, imx2, imn2, ibmean] = neural_enhance(m, filename_reg, Params);
+        if strcmp(overwrite_flag, 'all')
+            [m, imaxy1, overwrite_flag, imx2, imn2, ibmean] = neural_enhance(m, filename_reg, Params, true);
+        else
+            [m, imaxy1, overwrite_flag, imx2, imn2, ibmean] = neural_enhance(m, filename_reg, Params);
+        end
 
         %% neural enhancing postprocess %%
         if overwrite_flag

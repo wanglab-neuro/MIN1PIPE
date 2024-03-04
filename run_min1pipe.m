@@ -1,4 +1,4 @@
-function run_min1pipe(filePath)
+function run_min1pipe(filePath, overwrite)
 
 % Example usage:
 % run_min1pipe('./demo/demo_data.tif')
@@ -9,6 +9,9 @@ function run_min1pipe(filePath)
 % cd ~
 % mv .matlab .matlab.bak
 
+if nargin < 2
+    overwrite = false;
+end
 
 %% session-specific parameter initialization %%
 Fsi = 20;
@@ -22,7 +25,7 @@ ifpost = false; %%% set true if want to see post-process %%%
 
 %% main program %%
 [path_name, file_name, file_format] = fileparts(filePath);
-[fname, frawname, fregname] = min1pipe_HPC(Fsi, Fsi_new, [], [], ismc, flag, path_name, [file_name file_format]);
+[fname, frawname, fregname] = min1pipe_HPC(Fsi, Fsi_new, [], [], ismc, flag, path_name, [file_name file_format], overwrite);
 
 if ifpost
     load(fname)
