@@ -5,7 +5,7 @@
 #SBATCH --mem=5G
 #SBATCH --export=HDF5_USE_FILE_LOCKING=FALSE
 
-module load mit/matlab/2021a
+module load mit/matlab/2021b
 cd /om/group/wanglab/code/MIN1PIPE_OM
-matlab -nodisplay -r "run_min1pipe('./demo/demo_data.tif'); exit;"
+matlab -nodesktop -nodisplay -r "run_min1pipe('./demo/demo_data.tif'); exit;"
 
