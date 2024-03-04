@@ -35,6 +35,8 @@ function [m_out, pixh, pixw] = downsamp_unit(m_in, spatialr, ttype)
         end
         frame_all = frame_allt;
         savef(filename, 2, 'frame_all')
+        % print progress
+        disp(['downsamp_unit is done with batch ', num2str(ib), ' out of ', num2str(nbatch)]);
     end
     pixh = pixht;
     pixw = pixwt;
