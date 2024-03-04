@@ -154,7 +154,11 @@ for i = 1: length(file_base)
         %%% --------- 3rd section ---------- %%%
         nflag = 2;
         filename_reg_post = [path_name, file_base{i}, '_reg_post.mat'];
-        m = noise_suppress(m, imaxy, Fsi_new, nflag, filename_reg_post);
+        if strcmp(overwrite_flag, 'all')
+            m = noise_suppress(m, imaxy, Fsi_new, nflag, filename_reg_post, true);
+        else
+            m = noise_suppress(m, imaxy, Fsi_new, nflag, filename_reg_post);
+        end
 
         %% get rough roi domain %%
         mask = dominant_patch(imaxy);
