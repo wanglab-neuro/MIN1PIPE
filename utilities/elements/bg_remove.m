@@ -18,6 +18,7 @@ function Ydebg = bg_remove(Y, sz, ispara)
     %%% prepare parallel computing %%%
     if ispara
         if isempty(gcp('nocreate'))
+            disp(['bg_remove is starting a pool of workers with ', num2str(feature('numCores')), ' cores']);
             parpool(feature('numCores'));
         end
     end

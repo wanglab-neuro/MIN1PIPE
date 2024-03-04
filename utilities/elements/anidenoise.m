@@ -55,6 +55,7 @@ function YDeN = anidenoise(Y, sz, ispara, iter, dt, kappa, opt)
     else
         if ispara
             if isempty(gcp('nocreate'))
+                disp(['anidenoise is starting a pool of workers with ', num2str(feature('numCores')), ' cores']);
                 parpool(feature('numCores'));
             end
             parfor i = 1: nframes

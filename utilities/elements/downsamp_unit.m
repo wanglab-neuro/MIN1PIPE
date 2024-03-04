@@ -20,6 +20,8 @@ function [m_out, pixh, pixw] = downsamp_unit(m_in, spatialr, ttype)
 
     %% downsampling %%
     if isempty(gcp('nocreate'))
+        % Display the number of workers that will be started
+        disp(['downsamp_unit is starting a pool of workers with ', num2str(feature('numCores')), ' cores']);
         parpool(feature('numCores'));
     end
     

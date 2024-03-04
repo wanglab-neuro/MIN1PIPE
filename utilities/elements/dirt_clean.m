@@ -18,6 +18,7 @@ function Ydcln = dirt_clean(Y, sz, ispara)
     %%% prepare parallel computing %%%
     if ispara
         if isempty(gcp('nocreate'))
+            disp(['dirt_clean is starting a pool of workers with ', num2str(feature('numCores')), ' cores']);
             parpool(feature('numCores'));
         end
     end

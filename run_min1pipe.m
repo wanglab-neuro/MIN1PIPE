@@ -5,7 +5,9 @@ function run_min1pipe(filePath)
 
 % on the HPC, you can run this function with the following command:
 % sbatch --mem=16G --time=1:00:00 --wrap="matlab -nodisplay -r 'run_min1pipe('./demo/demo_data.tif'); exit;'"
-% (parpool doesn't work on the HPC on interactive session)
+% If parpool doesn't work on the HPC, rename the .matlab directory to get a clean environment:
+% cd ~
+% mv .matlab .matlab.bak
 
 
 %% session-specific parameter initialization %%

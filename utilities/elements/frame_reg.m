@@ -42,6 +42,7 @@ function [m, acorrf, acorr, scl, imax] = frame_reg(m, imaxn, se, Fs, pixs, scl, 
 
     %%% prepare parallel computing %%%
     if isempty(gcp('nocreate'))
+        disp(['frame_reg is starting a pool of workers with ', num2str(feature('numCores')), ' cores']);
         parpool(feature('numCores'));
     end
     

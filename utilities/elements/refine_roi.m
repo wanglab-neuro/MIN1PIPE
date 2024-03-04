@@ -5,6 +5,7 @@ function [A, C, iduse, datasmthf, cutofff, pkcutofff] = refine_roi(m, C, f, Aold
 
     hroi = tic;
     if isempty(gcp('nocreate'))
+        disp(['refine_roi is starting a pool of workers with ', num2str(feature('numCores')), ' cores']);
         parpool(feature('numCores'));
     end
     
