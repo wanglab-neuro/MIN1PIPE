@@ -16,8 +16,8 @@ end
 %% session-specific parameter initialization %%
 Fsi = 20;
 Fsi_new = 20; %%% no temporal downsampling %%%
-% spatialr = 1; %%% no spatial downsampling %%%
-% se = 5; %%% structure element for background removal %%%
+% spatialr = 1; %%% no spatial downsampling %%% Will be set to default, which is 0.5. If data is already downsampled, set to 1. 
+% se = 5; %%% structure element for background removal %%% Will be set to default, which is 5. This is supposed to be the setting for the UCLA miniscope, but works (?) for the Inscopix miniscope as well with the 1mm lens. Set 7 for the 600 um lens.
 ismc = true; %%% run movement correction %%%
 flag = 1; %%% use auto seeds selection; 2 if manual %%%
 % isvis = true; %%% do visualize %%%
