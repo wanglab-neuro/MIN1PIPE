@@ -4,4 +4,12 @@ utilities/cvx/
 # .asv Matlab files
 *.asv
 
+# ignore demo data files
+demo/demo_data_frame_all.mat
+demo/demo_data_frame_allt.mat
+demodemo*
+
+# ignore slurm logs
+slurm-*
+
 # remove cached files from the repo with: git rm -r --cached <file>.<format>
