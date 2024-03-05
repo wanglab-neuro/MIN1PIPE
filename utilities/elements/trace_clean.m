@@ -1,43 +1,51 @@
 function sigout = trace_clean(sigin, Fs, tflag)
-    [n1, n2] = size(sigin);
-    sigout = sigin;
-    parfor i = 1: n1
-        tmp = sigin(i, :);
-        tmp(1: round(Fs / 4)) = linspace(prctile(tmp, 1), tmp(round(Fs / 4)), round(Fs / 4));
-        
-        %%% 1. get smoothed signal %%%
-        tmpt = wdenoise(double(tmp), 5, 'Wavelet', 'sym8', 'DenoisingMethod', 'sure', 'noiseestimate', 'leveldependent');
-        mn = median(tmp);
-                
-        if tflag == 1
+% trace_clean: clean the trace by removing the baseline and suppressing the noise
+% input: sigin: input signal
+%        Fs: sampling frequency
+%        tflag: 1 for time series data, 0 for non-time series data
+% output: sigout: output signal
+
+[n1, n2] = size(sigin);
+% sigsize = cast(size(sigin),'uint16');
+% n1 = sigsize(1); n2 = sigsize(2);
+sigout = sigin;
+parfor i = 1: n1
+    tmp = sigin(i, :);
+    tmp(1: round(Fs / 4)) = linspace(prctile(tmp, 1), tmp(round(Fs / 4)), round(Fs / 4));
+    
+    %%% 1. get smoothed signal %%%
+    tmpt = wdenoise(double(tmp), 5, 'Wavelet', 'sym8', 'DenoisingMethod', 'sure', 'noiseestimate', 'leveldependent');
+    mn = median(tmp);
             
-            %%% 2.1 lower "envelope" %%%
-            tt = find_valleys(tmpt, tflag);
+    if tflag == 1
         
-            %%% 2.2 get smoothed baseline %%%
-            kl = min(Fs * 200, length(tt) / 2);
-            ttt = conv(tt, gausswin(kl) / sum(gausswin(kl)), 'valid');
-            ttt = interp1(ceil(kl / 2): ceil(kl / 2) + length(ttt) - 1, ttt, 1: length(tt), 'linear', 'extrap');
-            tmp1 = tmp - ttt;
-        else
-            %%% 2.1 RDP algorithm to get key turning points %%%
-            mnt = tmp - tmpt;
-            mnt = prctile(mnt, 95) - prctile(mnt, 5);
-            tt = rdp([1: n2; tmpt], mnt);
-            tt = interp1(tt(1, :), tt(2, :), 1: n2, 'linear', 'extrap');
-            ttt = find_valleys(tt, tflag);
+        %%% 2.1 lower "envelope" %%%
+        tt = find_valleys(tmpt, tflag);
+    
+        %%% 2.2 get smoothed baseline %%%
+        kl = min(Fs * 200, length(tt) / 2);
+        ttt = conv(tt, gausswin(kl) / sum(gausswin(kl)), 'valid');
+        ttt = interp1(ceil(kl / 2): ceil(kl / 2) + length(ttt) - 1, ttt, 1: length(tt), 'linear', 'extrap');
+        tmp1 = tmp - ttt;
+    else
+        %%% 2.1 RDP algorithm to get key turning points %%%
+        mnt = tmp - tmpt;
+        mnt = prctile(mnt, 95) - prctile(mnt, 5);
+        tt = rdp([1: n2; tmpt], mnt);
+        tt = interp1(tt(1, :), tt(2, :), 1: n2, 'linear', 'extrap');
+        ttt = find_valleys(tt, tflag);
 %             tmp1 = max(0, tmp - ttt);
-            tmp1 = tmp - ttt;
-        end
-        
-        %%% 3. correct baseline %%%
-        mn2 = median(tmp1);
-        offset = mn - mn2;
-        
-        %%% 4. suppress noise %%%
-        sigout(i, :) = max(0, tmp1 + offset);
+        tmp1 = tmp - ttt;
     end
     
+    %%% 3. correct baseline %%%
+    mn2 = median(tmp1);
+    offset = mn - mn2;
+    
+    %%% 4. suppress noise %%%
+    sigout(i, :) = max(0, tmp1 + offset);
+end
+
 %     %%% 1. calculate the baseline %%%
 %     [n1, n2] = size(sigin);
 %     mn = zeros(n1, 1);
@@ -76,17 +84,17 @@ function sigout = trace_clean(sigin, Fs, tflag)
 end
 
 function tt = find_valleys(tmpt, tflag)
-    [pks, x] = findpeaks(-tmpt);
+[pks, x] = findpeaks(-tmpt);
 
-    mn = median(tmpt);
-    if tflag == 1
-        md = std(tmpt);
-        id = pks >= -mn - 2 * md;
-    else
-        id = pks >= -mn;
-    end
+mn = median(tmpt);
+if tflag == 1
+    md = std(tmpt);
+    id = pks >= -mn - 2 * md;
+else
+    id = pks >= -mn;
+end
 
-    x = x(id);
-    x = [1, x, length(tmpt)];
-    tt = interp1(x, tmpt(x), 1: length(tmpt), 'linear');
+x = x(id);
+x = [1, x, length(tmpt)];
+tt = interp1(x, tmpt(x), 1: length(tmpt), 'linear');
 end

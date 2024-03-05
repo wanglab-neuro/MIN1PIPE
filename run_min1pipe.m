@@ -15,7 +15,7 @@ end
 
 %% session-specific parameter initialization %%
 Fsi = 20;
-Fsi_new = 1; %%% no temporal downsampling %%%
+Fsi_new = 20; %%% no temporal downsampling %%%
 % spatialr = 1; %%% no spatial downsampling %%%
 % se = 5; %%% structure element for background removal %%%
 ismc = true; %%% run movement correction %%%
