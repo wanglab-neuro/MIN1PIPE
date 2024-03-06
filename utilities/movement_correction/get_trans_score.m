@@ -38,7 +38,7 @@ function [acorr, duse] = get_trans_score(Y, flag, ispara, isdisp, mq, maskc)
             try
                 img_old = regt(:, :, i - 1);
                 img = Y(:, :, i);
-                d = klt2(normalize(img_old), normalize(img), biderr, mq, [], [], maskc);
+                d = klt2(normalize_intensity(img_old), normalize_intensity(img), biderr, mq, [], [], maskc);
                 duse(i - 1, :) = mean(d, 1);
                 if ~isempty(d)
                     if flag == 1
@@ -63,7 +63,7 @@ function [acorr, duse] = get_trans_score(Y, flag, ispara, isdisp, mq, maskc)
             try
                 img_old = regt(:, :, i - 1);
                 img = Y(:, :, i);
-                d = klt2(normalize(img_old), normalize(img), biderr, mq, [], [], maskc);
+                d = klt2(normalize_intensity(img_old), normalize_intensity(img), biderr, mq, [], [], maskc);
                 duse(i - 1, :) = mean(d, 1);
                 if ~isempty(d)
                     if flag == 1

@@ -14,7 +14,7 @@ function acorr = get_trans_score_ref(Y, imref, maskc)
         for i = 1: nframes
             img_old = imref;
             img = Y(:, :, i);
-            d = klt2(normalize(img_old), normalize(img), biderr, mq, [], [], maskc);
+            d = klt2(normalize_intensity(img_old), normalize_intensity(img), biderr, mq, [], [], maskc);
             if ~isempty(d)
                 temp = mean(sqrt(d(:, 1) .^ 2 + d(:, 2) .^ 2));
 %                 acorr(i) = max(1, exp((-size(d, 1) + 10) / 2)) * temp;
@@ -27,7 +27,7 @@ function acorr = get_trans_score_ref(Y, imref, maskc)
         parfor i = 1: nframes
             img_old = imref;
             img = Y(:, :, i);
-            d = klt2(normalize(img_old), normalize(img), biderr, mq, [], [], maskc);
+            d = klt2(normalize_intensity(img_old), normalize_intensity(img), biderr, mq, [], [], maskc);
             if ~isempty(d)
                 temp = mean(sqrt(d(:, 1) .^ 2 + d(:, 2) .^ 2));
 %                 acorr(i) = max(1, exp((-size(d, 1) + 10) / 2)) * temp;

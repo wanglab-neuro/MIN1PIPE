@@ -16,9 +16,9 @@ function [scrout, imgout, xformout] = klt_track(mxall, flag)
     
     %%% loop through all neighboring frame pairs %%%
     for i = 1: nf - 1
-        imcur = normalize(mxall(:, :, i + 1)); 
+        imcur = normalize_intensity(mxall(:, :, i + 1)); 
 %         imcur = im_bg_suppress(imcur);
-        imref = normalize(mxall(:, :, i)); %%% raw ref %%%
+        imref = normalize_intensity(mxall(:, :, i)); %%% raw ref %%%
 %         imref = im_bg_suppress(imref);
         
         xforms = cell(size(imref, 3), nmaxloop + 1);

@@ -94,7 +94,7 @@ if overwrite_flag
     ibmean = ibmean / nf;
     imx2 = max(imaxf(:));
     imn2 = min(iminf(:));
-    imaxf = normalize(imaxf);
+    imaxf = normalize_intensity(imaxf);
     m_out = normalize_batch(filename, 'reg', imx2, imn2, idbatch);
     save([fname, '_supporting.mat'], 'imx2', 'imn2', 'imaxf', 'ibmean', '-append')
 else

@@ -58,7 +58,7 @@ function Ydebg = bg_remove(Y, sz, ispara)
     end
     
 %     %%% norm after remove %%%
-%     Ydebg = normalize(Ydebg);
+%     Ydebg = normalize_intensity(Ydebg);
 %     time = toc(hbg);
 %     disp(['Done bg remove, total time: ', num2str(time), ' seconds'])
 end

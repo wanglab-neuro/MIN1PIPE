@@ -215,8 +215,8 @@ for i = 1: length(file_base)
         %             dff = compute_dff(sigfn, bgfn, bgffn, seedsfn);
 
         %%% estimate df/f %%%
-        imcur = normalize(imaxy1);
-        imref = normalize(imaxy);
+        imcur = normalize_intensity(imaxy1);
+        imref = normalize_intensity(imaxy);
         [img, sx, sy] = logdemons_unit(imref, imcur);
         for ii = 1: length(sx)
             ibmean = iminterpolate(ibmean, sx{ii}, sy{ii});

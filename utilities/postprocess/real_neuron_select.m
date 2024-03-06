@@ -20,9 +20,9 @@ function real_neuron_select
     nr = 10;
     nn = size(sig, 1);
     nc = ceil(nn / nr);
-    sig = normalize(sig);
+    sig = normalize_intensity(sig);
     for i = 1: nn
-        sig(i, :) = normalize(sig(i, :));
+        sig(i, :) = normalize_intensity(sig(i, :));
     end
 %     tp = reshape(max(roi * sig, [], 2), pixh, pixw);
     tp = imax;

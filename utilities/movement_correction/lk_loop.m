@@ -41,6 +41,7 @@ function [mxout, xfuse, iduse] = lk_loop(mxin, pixs, scl, maskc)
             n = size(mxint1, 3);
             mxint2 = mxint1;
             mxint3 = mxint1;
+            errorflag=false;
             parfor ii = 1: n - 1
                 if ismember(ii, idrun)
                     imref = mxint2(:, :, ii);
@@ -49,7 +50,7 @@ function [mxout, xfuse, iduse] = lk_loop(mxin, pixs, scl, maskc)
                     if any(any(isnan(imref))) | any(any(isnan(imcur)))
                         disp(['NAN values in imref or imcur, item #' num2str(ii) ' in lk_loop'])
                     end
-                    
+
                     %%%% track current two neighboring "frames" %%%%
                     try
                         [PNt, imgt, scrto] = lk_ref_track(imcur, imref, maskc);
@@ -57,6 +58,7 @@ function [mxout, xfuse, iduse] = lk_loop(mxin, pixs, scl, maskc)
                     catch
                         disp(['Error with item #' num2str(ii) ' in lk_loop'])
                         [PNt, imgt, scrto, scrtc] = deal([]);
+                        errorflag=true;
                     end
                     
                     %%%% track real neighboring frames %%%%
@@ -70,6 +72,7 @@ function [mxout, xfuse, iduse] = lk_loop(mxin, pixs, scl, maskc)
                         catch
                             disp(['Error with item #' num2str(ii) ' in lk_loop'])
                             [PNt1, imgt1, scrto1, scrtc1] = deal([]);
+                            errorflag=true;
                         end
                         
                         %%%%% get smallest score %%%%%
@@ -96,6 +99,10 @@ function [mxout, xfuse, iduse] = lk_loop(mxin, pixs, scl, maskc)
                     imgmatrix(:, :, ii + 1) = imgt;
                 end
 %                 disp(num2str(ii))
+            end
+            
+            if errorflag
+                disp('stop')
             end
             
             %%% compute connected subgraph components %%%

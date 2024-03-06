@@ -26,7 +26,7 @@ function [A, C, iduse, datasmthf, cutofff, pkcutofff] = refine_roi(m, C, f, Aold
     sarea = zeros(size(Aold));
     cthres = 0.1;
     for i = 1: nroi
-        sarea(:, i) = reshape(normalize(imgaussfilt(full(reshape(Aold(:, i), d1, d2)), swin)) > cthres, d, 1);
+        sarea(:, i) = reshape(normalize_intensity(imgaussfilt(full(reshape(Aold(:, i), d1, d2)), swin)) > cthres, d, 1);
     end
     time = toc(hroi);
     disp(['Done init, use ', num2str(time), ' seconds'])

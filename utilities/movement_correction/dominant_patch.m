@@ -7,7 +7,7 @@ function mask = dominant_patch(Y, thres)
     end
     [pixh, pixw, ~] = size(Y);
     t = max(Y, [], 3);
-    mskt = double(normalize(demons_prep(t)) > thres);
+    mskt = double(normalize_intensity(demons_prep(t)) > thres);
     msktt = medfilt2(mskt, [ceil(pixh / 50), ceil(pixw / 50)]);
     if ~sum(msktt(:)) == 0
         mskt = msktt;
@@ -19,7 +19,7 @@ function mask = dominant_patch(Y, thres)
     ci = ci.ConvexImage;
     ciuse = ci(1: diff(brg(1, :)) + 1, 1: diff(brg(2, :)) + 1);
     mskt(brg(1, 1): brg(1, 2), brg(2, 1): brg(2, 2)) = ciuse;
-    mskt = normalize(imgaussfilt(mskt, max(pixh, pixw) / 5)) > thres;
+    mskt = normalize_intensity(imgaussfilt(mskt, max(pixh, pixw) / 5)) > thres;
     [ll, n] = bwlabeln(mskt);
     ss = zeros(1, n);
     for i = 1: n

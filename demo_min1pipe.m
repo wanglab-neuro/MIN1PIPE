@@ -56,7 +56,7 @@ end
 subplot(2, 3, 6, 'align')
 sigt = sigfn;
 for i = 1: size(sigt, 1)
-    sigt(i, :) = normalize(sigt(i, :));
+    sigt(i, :) = normalize_intensity(sigt(i, :));
 end
 plot((sigt + (1: size(sigt, 1))')')
 axis tight

@@ -12,7 +12,7 @@ function roig = roi_gauss(roi)
         roi = reshape(roi, d1, d2, d3);
     end
     for i = 1: d3
-        roig(:, i) = reshape(normalize(imgaussfilt(full(roi(:, :, i)), swin)) > cthres, d, 1);
+        roig(:, i) = reshape(normalize_intensity(imgaussfilt(full(roi(:, :, i)), swin)) > cthres, d, 1);
     end
 end
 

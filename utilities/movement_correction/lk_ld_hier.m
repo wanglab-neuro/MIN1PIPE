@@ -78,7 +78,7 @@ function [mxfn, xff, ldf, idf] = lk_ld_hier(mxall, mxalla, pixs, scl, sigma_x, s
     for i = 1: length(idlkfn)
         mxfn1(:, :, i) = max(mx4ld(:, :, idlkfn{i}), [], 3);
     end
-    mxfn1 = normalize(mxfn1);
+    mxfn1 = normalize_intensity(mxfn1);
 
     %% LogDemons first feedforward then full cluster %%
     
