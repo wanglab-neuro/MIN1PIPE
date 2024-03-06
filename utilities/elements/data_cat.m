@@ -302,7 +302,7 @@ function [m, filename, imaxf, imeanf, pixh, pixw, nf, imx1, imn1] = data_cat(pat
         end
     else %%% get .mat format %%%
         %%% get file info %%%
-        fname = [path_name, file_base, '.mat'];
+        fname = fullfile(path_name, [file_base, '.mat']);
         mm = matfile(fname);
         vnames = who(mm);
         eval(['dtype = class(mm.', vnames{1}, '(:, :, 1));'])
@@ -319,7 +319,7 @@ function [m, filename, imaxf, imeanf, pixh, pixw, nf, imx1, imn1] = data_cat(pat
         %%% collect batch-wise frames %%%
         idbatch = [1: ebatch: nff, nff + 1];
         disp('Begin data cat')
-        filename = [path_name, file_base, '_frame_allt.mat'];
+        filename = fullfile(path_name, [file_base, '_frame_allt.mat']);
         msg = 'Overwrite raw .mat file (data)? (y/n)';
         overwrite_flag = judge_file(filename, msg);
         

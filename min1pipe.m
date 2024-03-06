@@ -70,7 +70,7 @@ function [file_name_to_save, filename_raw, filename_reg] = min1pipe(Fsi, Fsi_new
     hpipe = tic;
     for i = 1: length(file_base)
         %%% judge whether do the processing %%%
-        filecur = [path_name, file_base{i}, '_data_processed.mat'];
+        filecur = fullfile(path_name, [file_base{i}, '_data_processed.mat']);
         msg = 'Redo the analysis? (y/n)';
         overwrite_flag = judge_file(filecur, msg);
         
@@ -113,7 +113,7 @@ function [file_name_to_save, filename_raw, filename_reg] = min1pipe(Fsi, Fsi_new
                     [m, corr_score, raw_score, scl, imaxy] = frame_reg(m, imaxy1, se, Fsi_new, pixs, scl, sigma_x, sigma_f, sigma_d);
                     Params.mc_scl = scl; %%% update latest scl %%%
                     
-%                     file_name_to_save = [path_name, file_base{i}, '_data_processed.mat'];
+%                     file_name_to_save = fullfile(path_name, [file_base{i}, '_data_processed.mat']);
 %                     if exist(file_name_to_save, 'file')
 %                         delete(file_name_to_save)
 %                     end
@@ -131,7 +131,7 @@ function [file_name_to_save, filename_raw, filename_reg] = min1pipe(Fsi, Fsi_new
             %% movement correction postprocess %%
             %%% --------- 3rd section ---------- %%%
             nflag = 2;
-            filename_reg_post = [path_name, file_base{i}, '_reg_post.mat'];
+            filename_reg_post = fullfile(path_name, [file_base{i}, '_reg_post.mat']);
             m = noise_suppress(m, imaxy, Fsi_new, nflag, filename_reg_post);
             
             %% get rough roi domain %%
@@ -211,7 +211,7 @@ function [file_name_to_save, filename_raw, filename_reg] = min1pipe(Fsi, Fsi_new
                 imax = max(cat(3, max(tmp, [], 3), imax), [], 3);
             end
             
-            file_name_to_save = [path_name, file_base{i}, '_data_processed.mat'];
+            file_name_to_save = fullfile(path_name, [file_base{i}, '_data_processed.mat']);
             if exist(file_name_to_save, 'file')
 %                 if ismc
 %                     load(file_name_to_save, 'raw_score', 'corr_score')
@@ -234,8 +234,8 @@ function [file_name_to_save, filename_raw, filename_reg] = min1pipe(Fsi, Fsi_new
             time1 = toc(hpipe);
             disp(['Done all, total time: ', num2str(time1), ' seconds'])
         else
-            filename_raw = [path_name, file_base{i}, '_frame_all.mat'];
-            filename_reg = [path_name, file_base{i}, '_reg.mat'];
+            filename_raw = fullfile(path_name, [file_base{i}, '_frame_all.mat']);
+            filename_reg = fullfile(path_name, [file_base{i}, '_reg.mat']);
             file_name_to_save = filecur;
             
             time1 = toc(hpipe);
