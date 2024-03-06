@@ -43,7 +43,7 @@ function [m, filename, imaxf, imeanf, pixh, pixw, nf, imx1, imn1] = data_cat(pat
 
             %% initialize to get info %%
             if contains(file_fmt, 'avi')
-                dirst = [dir([path_name, file_base, '.avi']); dir([path_name, file_base, '*', '.avi'])];
+                dirst = [dir(fullfile(path_name, [file_base, '.avi'])); dir(fullfile(path_name, [file_base, '*', '.avi']))];
             elseif contains(file_fmt, 'tiff')
                 dirst = [dir(fullfile(path_name, [file_base, '.tiff'])); dir(fullfile(path_name, [file_base, '-*', '.tiff']))];
             elseif contains(file_fmt, 'tif')
@@ -281,9 +281,9 @@ function [m, filename, imaxf, imeanf, pixh, pixw, nf, imx1, imn1] = data_cat(pat
             imx1 = max(imaxf(:));
             imn1 = min(iminf(:));
             m = normalize_batch(filename, 'frame_allt', imx1, imn1, idbatch);
-            save([path_name, file_base, '_supporting.mat'], 'imx1', 'imn1')
+            save(fullfile(path_name, [file_base, '_supporting.mat']), 'imx1', 'imn1')
         else %%% get outputs from the saved data file %%%
-            load([path_name, file_base, '_supporting.mat'], 'imx1', 'imn1')
+            load(fullfile(path_name, [file_base, '_supporting.mat']), 'imx1', 'imn1')
             m = matfile(filename);
             [pixh, pixw, nf] = size(m, 'frame_allt');
             imaxf = zeros(pixh, pixw);
