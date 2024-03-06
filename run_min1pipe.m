@@ -29,6 +29,15 @@ flag = 1; %%% use auto seeds selection; 2 if manual %%%
 % isvis = true; %%% do visualize %%%
 ifpost = false; %%% set true if want to see post-process %%%
 
+% Display the parameters and the file path
+disp('Running MIN1PIPE using parameters:')
+fprintf('Fsi: %d\n', Fsi);
+fprintf('Fsi_new: %d\n', Fsi_new);
+fprintf('ismc: %d\n', ismc);
+fprintf('flag: %d\n', flag);
+fprintf('ifpost: %d\n', ifpost);
+fprintf('filePath: %s\n', filePath);
+
 %% main program %%
 [path_name, file_name, file_format] = fileparts(filePath);
 [fname, frawname, fregname] = min1pipe_HPC(Fsi, Fsi_new, [], [], ismc, flag, path_name, [file_name file_format], overwrite);
