@@ -13,6 +13,12 @@ if nargin < 2
     overwrite = false;
 end
 
+%  if mp_pathdef exists, run it to set the MATLAB path
+if exist('mp_pathdef.m', 'file')
+    path(pathdef, path); 
+    run('mp_pathdef.m');
+end
+
 %% session-specific parameter initialization %%
 Fsi = 20;
 Fsi_new = 20; %%% no temporal downsampling %%%

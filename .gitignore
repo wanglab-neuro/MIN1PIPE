@@ -12,4 +12,8 @@ demodemo*
 # ignore slurm logs
 slurm-*
 
+# ignore path file - to be set up by the user if needed
+mp_pathdef.m
+
 # remove cached files from the repo with: git rm -r --cached <file>.<format>
+
