@@ -74,12 +74,16 @@ function m = intra_section(m, stt, stp, pixs, scl, sigma_x, sigma_f, sigma_d, fl
         %%% find a best registration for frames within each stable section %%%
         stof = idbatch(i);
         parfor ii = 1: length(regtpara)
-            regtcur = double(regtpara{ii});
-            ncur = size(regtcur, 3);
-            [mxcur, xfcur, ldcur, idcur] = lk_ld_hier(regtcur, [], pixs, scl, sigma_x, sigma_f, sigma_d, sclld, maskc); %%% lk_loop+lk_cluster+logdemons_loop %%%
-            regtcur = logdemons_warp_layers(squeeze(mat2cell(regtcur, pixh, pixw, ones(1, ncur))), xfcur, ldcur);
-            regtcur = reshape(cell2mat(regtcur(:)'), pixh, pixw, ncur);
-            regtpara{ii} = regtcur;
+            try
+                regtcur = double(regtpara{ii});
+                ncur = size(regtcur, 3);
+                [mxcur, xfcur, ldcur, idcur] = lk_ld_hier(regtcur, [], pixs, scl, sigma_x, sigma_f, sigma_d, sclld, maskc); %%% lk_loop+lk_cluster+logdemons_loop %%%
+                regtcur = logdemons_warp_layers(squeeze(mat2cell(regtcur, pixh, pixw, ones(1, ncur))), xfcur, ldcur);
+                regtcur = reshape(cell2mat(regtcur(:)'), pixh, pixw, ncur);
+                regtpara{ii} = regtcur;
+            catch
+                disp(['Error with item #:' num2str(ii)])
+            end
             
             %%%% release worker memory %%%%
             regtcur = [];

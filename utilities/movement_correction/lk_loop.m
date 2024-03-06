@@ -45,18 +45,32 @@ function [mxout, xfuse, iduse] = lk_loop(mxin, pixs, scl, maskc)
                 if ismember(ii, idrun)
                     imref = mxint2(:, :, ii);
                     imcur = mxint3(:, :, ii + 1);
+
+                    if any(any(isnan(imref))) | any(any(isnan(imcur)))
+                        disp(['NAN values in imref or imcur, item #' num2str(ii) ' in lk_loop'])
+                    end
                     
                     %%%% track current two neighboring "frames" %%%%
-                    [PNt, imgt, scrto] = lk_ref_track(imcur, imref, maskc);
-                    scrtc = get_trans_score_ref(imgt, imref, maskc);
+                    try
+                        [PNt, imgt, scrto] = lk_ref_track(imcur, imref, maskc);
+                        scrtc = get_trans_score_ref(imgt, imref, maskc);
+                    catch
+                        disp(['Error with item #' num2str(ii) ' in lk_loop'])
+                        [PNt, imgt, scrto, scrtc] = deal([]);
+                    end
                     
                     %%%% track real neighboring frames %%%%
                     if countfn > 1
                         [imreft, imcurt] = find_frame(mxintt, idclustfn, ii);
                         
                         %%%%% the other track %%%%%
-                        [PNt1, imgt1, scrto1] = lk_ref_track(imcurt, imreft, maskc);
-                        scrtc1 = get_trans_score_ref(imgt1, imreft, maskc);
+                        try
+                            [PNt1, imgt1, scrto1] = lk_ref_track(imcurt, imreft, maskc);
+                            scrtc1 = get_trans_score_ref(imgt1, imreft, maskc);
+                        catch
+                            disp(['Error with item #' num2str(ii) ' in lk_loop'])
+                            [PNt1, imgt1, scrto1, scrtc1] = deal([]);
+                        end
                         
                         %%%%% get smallest score %%%%%
                         if scrto1 < scrto
