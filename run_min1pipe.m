@@ -40,7 +40,7 @@ fprintf('filePath: %s\n', filePath);
 
 %% main program %%
 [path_name, file_name, file_format] = fileparts(filePath);
-[fname, frawname, fregname] = min1pipe_HPC(Fsi, Fsi_new, [], [], ismc, flag, path_name, [file_name file_format], overwrite);
+[fname, frawname, fregname] = min1pipe_HPC(Fsi, Fsi_new, spatialr, [], ismc, flag, path_name, [file_name file_format], overwrite);
 
 if ifpost
     load(fname)
