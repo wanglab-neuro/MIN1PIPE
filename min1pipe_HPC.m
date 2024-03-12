@@ -111,7 +111,11 @@ for i = 1: length(file_base)
         [m, imaxn] = remove_dp(m, 'frame_allt');
 
         %%% spatial downsampling after auto-detection %%%
-        [m, Params, pixh, pixw] = downsamp(path_name, file_base{i}, m, Params, aflag, imaxn);
+        if strcmp(overwrite_files, 'all')
+            [m, Params, pixh, pixw] = downsamp(path_name, file_base{i}, m, Params, aflag, imaxn, true);
+        else
+            [m, Params, pixh, pixw] = downsamp(path_name, file_base{i}, m, Params, aflag, imaxn);
+        end
 
         %% neural enhancing batch version %%
         filename_reg = fullfile(path_name, [file_base{i}, '_reg.mat']);
