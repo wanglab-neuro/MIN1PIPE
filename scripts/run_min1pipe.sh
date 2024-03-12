@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH -t 01:00:00
+#SBATCH -t 05:00:00
 #SBATCH -N 1 
 #SBATCH -n 40
 #SBATCH --gres=gpu:1
 #SBATCH --constraint=high-capacity
-#SBATCH --mem=70G
+#SBATCH --mem=190G
 #SBATCH --export=HDF5_USE_FILE_LOCKING=FALSE
 
 module load mit/matlab/2021b
