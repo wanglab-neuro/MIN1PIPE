@@ -1,7 +1,15 @@
-function [m_out, Params, pixh, pixw] = downsamp(path_name, file_base, m_in, Params, aflag, imaxn)
+function [m_out, Params, pixh, pixw] = downsamp(path_name, file_base, m_in, Params, aflag, imaxn, overwrite_flag)
     filename = fullfile(path_name, [file_base, '_frame_all.mat']);
-    msg = 'Overwrite downsampled .mat file (data)? (y/n)';
-    overwrite_flag = judge_file(filename, msg);
+    
+    if nargin < 7
+        overwrite_flag = [];
+    end
+    
+    if isempty(overwrite_flag)
+        msg = 'Overwrite downsampled .mat file (data)? (y/n)';
+        overwrite_flag = judge_file(filename, msg);
+    end
+
     if overwrite_flag
         if exist(filename, 'file')
             delete(filename);
