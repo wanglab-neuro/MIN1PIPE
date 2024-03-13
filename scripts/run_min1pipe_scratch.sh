@@ -3,7 +3,7 @@
 #SBATCH -N 1 
 #SBATCH -n 40
 #SBATCH --gres=gpu:1
-#SBATCH --constraint=high-capacity
+#SBATCH --constraint="high-capacity&12GB"
 #SBATCH --mem=190G
 #SBATCH --export=HDF5_USE_FILE_LOCKING=FALSE
 
