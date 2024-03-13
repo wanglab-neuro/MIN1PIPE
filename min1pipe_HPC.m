@@ -94,6 +94,8 @@ for i = 1: length(file_base)
     else
         if strcmp(overwrite_files, 'all')
             overwrite_flag = true;
+        % elseif strcmp(overwrite_files, 'none')
+        %     overwrite_flag = true;
         else
             overwrite_flag = false;
         end
@@ -113,6 +115,8 @@ for i = 1: length(file_base)
         %%% spatial downsampling after auto-detection %%%
         if strcmp(overwrite_files, 'all')
             [m, Params, pixh, pixw] = downsamp(path_name, file_base{i}, m, Params, aflag, imaxn, true);
+        % elseif strcmp(overwrite_files, 'none')
+        %     [m, Params, pixh, pixw] = downsamp(path_name, file_base{i}, m, Params, aflag, imaxn, false);
         else
             [m, Params, pixh, pixw] = downsamp(path_name, file_base{i}, m, Params, aflag, imaxn);
         end
