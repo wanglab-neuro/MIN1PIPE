@@ -8,6 +8,13 @@ utilities/cvx/
 demo/demo_*
 !demo/demo_data.tif
 
+# ignore files in scripts folder
+scripts/*
+# except for the following files:
+!scripts/demo_run_min1pipe.sh
+!scripts/run_min1pipe.sh
+!scripts/run_min1pipe_scratch.sh
+
 # ignore slurm logs
 slurm-*
 

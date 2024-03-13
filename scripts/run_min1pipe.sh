@@ -8,6 +8,7 @@
 #SBATCH --export=HDF5_USE_FILE_LOCKING=FALSE
 
 module load mit/matlab/2021b
+
 # Edit the line below if you cloned the code to your own directory 
 cd /om/group/wanglab/code/MIN1PIPE_OM
 
