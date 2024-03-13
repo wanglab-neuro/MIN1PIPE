@@ -13,7 +13,7 @@ module load mit/matlab/2021b
 # Copy file to scratch space, in user / experiment specific directory
 file_path=$1
 scratch_path=/om/scratch/tmp/$USER/$(basename $(dirname $file_path))
-mkdir -p scratch_file_path
+mkdir -p $scratch_path
 rsync -Pavu $file_path $scratch_path/
 scratch_file_path=$scratch_path/$(basename $file_path)
 
