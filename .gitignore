@@ -17,9 +17,11 @@ scripts/*
 
 # ignore slurm logs
 slurm-*
+logs/*
 
 # ignore path file - to be set up by the user if needed
 mp_pathdef.m
 
 # remove cached files from the repo with: git rm -r --cached <file>.<format>
 
+run_min1pipe_Nitsan.m

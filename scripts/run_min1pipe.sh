@@ -5,6 +5,9 @@
 #SBATCH --gres=gpu:1
 #SBATCH --constraint="high-capacity&12GB"
 #SBATCH --mem=190G
+#SBATCH --mail-user=$USER@mit.edu
+#SBATCH --mail-type=BEGIN,END,FAIL,REQUEUE,TIME_LIMIT
+#SBATCH -o ./logs/min1pipe-%j.out
 #SBATCH --export=HDF5_USE_FILE_LOCKING=FALSE
 
 module load mit/matlab/2021b
