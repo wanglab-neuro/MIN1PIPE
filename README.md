@@ -81,7 +81,7 @@ Other modified functions adapted from others are credited the original sources i
 
 ## Usage
 **Do not add the package to the Matlab path before running, the package will add everything automatically.**  
-* Run locally:  
+### Run locally 
 - Download/clone the git code repository
 - Open Matlab and set the MIN1PIPE folder as the current folder in Matlab
 - Run [`min1pipe.m`](./min1pipe.m).
@@ -92,42 +92,7 @@ Other modified functions adapted from others are credited the original sources i
     - For multi-video datasets automatically divided by the data acquisition softwares, only the first (or a random video of the session) needs choosing. 
     - The algorithm will automatically judge the format of the datasets.
     - Currently support: *.avi*, *.tif* and *.tiff*.
-
-* Run on the cluster:
-- Clone the git code repository to you own space (e.g. /om/user/username/code).
-- Make a copy of run_minipipe.m and edit the parameters.
-- Copy/Edit scripts/run_minipipe_scratch.sh
-- Submit the job to the cluster, e.g.:
-`sbatch scripts/run_min1pipe_scratch_Nitsan.sh NESE/Nitsan/Inscopix/ng122/20240214_ng122_Lpaw_iso/ng122_BL_form_iso_10fps_sds2x.tiff`
-
-*Example of a successful run:*  
-_File_: `ng122_BL_form_iso_10fps_sds2x.tiff`, about 21.7 GB.
-_SBATCH directive_:
-```bash
-#!/bin/bash
-#SBATCH -t 05:00:00
-#SBATCH -N 1 
-#SBATCH -n 40
-#SBATCH --gres=gpu:1
-#SBATCH --constraint="high-capacity&12GB"
-#SBATCH --mem=190G
-#SBATCH --export=HDF5_USE_FILE_LOCKING=FALSE
-```
-_Job output_:
-```bash
-Job ID: 35670273
-Cluster: openmind7
-User/Group: nitsan/wanglab
-State: COMPLETED (exit code 0)
-Nodes: 1
-Cores per node: 40
-CPU Utilized: 2-18:10:11
-CPU Efficiency: 45.02% of 6-02:59:20 core-walltime
-Job Wall-clock time: 03:40:29
-Memory Utilized: 188.41 GB
-Memory Efficiency: 99.16% of 190.00 GB
-```
-
+    - 
 **Manual Options**
 - [`manual_seeds_select`](./utilities/elements/manual_seeds_select.m)
     - A figure will pop up, including: max progection of the video after the neural enhancing and movement correction. 
@@ -145,6 +110,49 @@ Memory Efficiency: 99.16% of 190.00 GB
     - To terminate the current session, press 'Enter'.
     - The function will automatically open the next session, until all sessions are looped.
     - A .mat file with 'filename_refined.mat' will be created in the same folder with refined key output variables.
+
+
+### Run on the cluster
+- Clone the git code repository to you own space (e.g. /om/user/username/code).
+- Make a copy of run_minipipe.m and edit the parameters.
+- Copy/Edit scripts/run_minipipe_scratch.sh
+- Submit the job to the cluster, e.g.:  
+```bash
+sbatch scripts/run_min1pipe_scratch_Nitsan.sh NESE/Nitsan/Inscopix/ng122/20240214_ng122_Lpaw_iso/ng122_BL_form_iso_10fps_sds2x.tiff
+```
+  
+**Example of a successful run:**  
+_File_:  
+`ng122_BL_form_iso_10fps_sds2x.tiff` (21.7 GB).  
+
+_SBATCH directive_:  
+```bash
+#!/bin/bash
+#SBATCH -t 05:00:00
+#SBATCH -N 1 
+#SBATCH -n 40
+#SBATCH --gres=gpu:1
+#SBATCH --constraint="high-capacity&12GB"
+#SBATCH --mem=190G
+#SBATCH --export=HDF5_USE_FILE_LOCKING=FALSE
+```
+
+_Job output_:  
+```bash
+Job ID: 35670273
+Cluster: openmind7
+User/Group: nitsan/wanglab
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 40
+CPU Utilized: 2-18:10:11
+CPU Efficiency: 45.02% of 6-02:59:20 core-walltime
+Job Wall-clock time: 03:40:29
+Memory Utilized: 188.41 GB
+Memory Efficiency: 99.16% of 190.00 GB
+```
+  
+
 
 **Key Parameters**:
 - **`Fsi`**: frame rate of original video
